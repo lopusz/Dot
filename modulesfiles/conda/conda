@@ -1,0 +1,16 @@
+#%Module
+
+proc ModuleName { } {
+    return "Miniconda"
+}
+
+proc ModulesHelp { } {
+  puts stderr "\tThis module will set up environment for [ModuleName]."
+}
+
+module-whatis   "loads environment for [ModuleName]"
+
+prepend-path  PATH  "/home/lopusz/Apps/conda/bin"
+
+setenv CONDA_ENVS_PATH "/home/lopusz/PyEnvs/conda_envs/"
+setenv CONDA_PKGS_DIRS "/home/lopusz/PyEnvs/conda_pkgs/"

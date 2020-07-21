@@ -1,0 +1,34 @@
+#!/bin/bash
+
+UCC=/opt/unicore/ucc-1.3.1/bin/ucc
+
+case $1 in
+    ra) 
+        CMD="run -a"
+        ;;
+    gs) 
+        CMD="get-status"
+        ;;
+    lj) CMD="list-jobs"
+        ;;
+    lsi) CMD="list-sites"
+        ;;
+    go) CMD="get-output -y"
+        ;;
+    he)
+        CMD="help"  
+        ;;
+    *)  CMD="$1" 
+        ;;
+esac
+
+shift 1
+
+$UCC $CMD $*
+
+# remove empty ucc.log
+if [ -f ucc.log ]; then
+    if [ ! -s ucc.log ]; then
+        rm -f ucc.log
+    fi
+fi

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ "$EMACS_HOME" == "" ]; then
+    echo "No EMACS_HOME variable, exiting ..."
+    exit 1
+fi
+
+EMACS=$EMACS_HOME/bin/emacs
+EMACS_CLIENT=$EMACS_HOME/bin/emacsclient
+
+if [ -f ${1} ]; then
+    F=${1}
+elif ! echo ${1} | grep -q  "/"; then
+    F=`find . -name "${1}*" | head -n1 | grep -e ".*"`
+    if [ $? -ne 0 ]; then
+        F=${1}  
+    fi
+else
+    F=${1}
+fi
+
+$EMACS_CLIENT -n ${F} 2> /dev/null
+
+if [ $? -ne 0 ] ; then
+    echo "No emacs server found, launching it..."
+    $EMACS --eval "(server-start)" ${F} & 
+fi

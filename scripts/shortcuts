@@ -1,0 +1,15 @@
+#!/bin/bash
+sed -i 's/\#bi/\\begin{itemize}/g' $1
+sed -i 's/\#ei/\\end{itemize}/g' $1
+sed -i 's/\#ii/\\item/g' $1
+sed -i 's/\#bb/\\begin{block}/g' $1
+sed -i 's/\#eb/\\end{block}/g' $1
+sed -i 's/\#tt/\\texttt/g' $1
+sed -i 's/\#uu/\\underline/g' $1
+sed -i 's/\#bdm/\\begin{displaymath}/g' $1
+sed -i 's/\#edm/\\end{displaymath}/g' $1
+sed -i 's/\#be/\\begin{equation}/g' $1
+sed -i 's/\#ee/\\end{equation}/g' $1
+sed -i 's/\#ba/\\begin{eqnarray}/g' $1
+sed -i 's/\#ea/\\end{eqnarray}/g' $1
+

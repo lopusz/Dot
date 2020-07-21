@@ -1,0 +1,81 @@
+#!/bin/bash
+
+C_TMP_DIR=tmp_$$
+C_GIT_REMOTE="github"
+C_GIT_CODE_BRANCH="master"
+C_GIT_DOC_BRANCH="gh-pages"
+C_APIDOCS_DIR="target/apidoc"
+
+function change_to_git_dir {
+    while [ ! -d .git ]; do
+        if [ $(pwd)  == "/" ]; then
+            echo "FATAL: .git not found. Exiting..."
+            exit 1
+        fi
+        cd ..
+    done
+    local DIR=`pwd`
+    basename ${DIR}
+}
+
+function get_git_repo_url {
+    git remote -v \
+     | head -n1   \
+     | grep -e "github.com" \
+     | grep -o -e "https.*\.git"
+}
+
+function get_git_repo_url {
+    git remote -v \
+    | grep -e "${C_GIT_REMOTE}" \
+    | head -n1  \
+    | grep -o -e "https.*\.git"
+}
+
+function clone_repo_to_tmp_dir {
+    cd ..
+    mkdir ${C_TMP_DIR}
+    cd ${C_TMP_DIR}
+    echo $1
+    git clone -o ${C_GIT_REMOTE} $1
+    cd ${G_PROJECT}
+    git checkout master
+}
+
+function update_docs_and_get_git_info {
+    G_GIT_NUM=`git log --pretty=oneline | wc -l`
+    G_GIT_SHA=`git log -n1 --format="%h"`
+    lein do clean, doc
+    mv ${C_APIDOCS_DIR} ..
+    git checkout ${C_GIT_DOC_BRANCH}
+    cd ..
+    rm -rf ${G_PROJECT}/*
+    cd ${G_PROJECT}
+    local APIDOCS_DIR_BASE=`basename ${C_APIDOCS_DIR}`
+    cp -rp ../${APIDOCS_DIR_BASE}/* .
+}
+
+function commit_docs {    
+    git add -A .
+    git commit -e -m \
+    "Autocommit of API docs for ${C_GIT_CODE_BRANCH} commit ${G_GIT_NUM} (${G_GIT_SHA})."
+}
+
+function clean_tmp {
+    cd ../../
+    rm -rf ${C_TMP_DIR}
+}
+
+G_PROJECT=$(change_to_git_dir)
+
+#git push ${C_GIT_REMOTE} ${C_GIT_CODE_BRANCH}
+
+GIT_REPO_URL=$(get_git_repo_url)
+
+clone_repo_to_tmp_dir ${GIT_REPO_URL}
+update_docs_and_get_git_info
+commit_docs
+
+#git push ${C_GIT_REMOTE} ${C_GIT_DOC_BRANCH}
+
+#clean_tmp

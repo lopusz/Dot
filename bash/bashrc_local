@@ -1,0 +1,83 @@
+# INITIALIZE MODULES
+. /opt/modules/init/bash
+. /opt/modules/init/bash_completion
+export MANPATH="$(manpath -g):/opt/modules/share/man/"
+export MODULEPATH="${MODULEPATH}:${HOME}/Dot/modulesfiles"
+# GLOBAL VARIABLES
+
+export PATH="$PATH:$HOME/Dot/scripts:${HOME}/.cargo/bin"
+export EDITOR=/bin/nano
+export TEXMFHOME=~/.config/texmf
+
+## Python (!!!) do not write bytecode
+export PYTHONDONTWRITEBYTECODE=1
+
+## Install packages only in virtual environments
+export PIP_REQUIRE_VIRTUALENV=true
+
+# ALIASES
+
+##  ICM/KDM machines
+alias gw="ssh -XC lopusz@gw.icm.edu.pl"
+alias re="ssh -t -Y lopusz@gw.icm.edu.pl ssh -Y rekin"
+alias bu="ssh -Y burza"
+
+## VLS machines
+alias gan="ssh -Y ganek.icm.edu.pl"
+
+## Useful programs
+
+alias mmake="/usr/bin/time -p make"
+alias tt="/usr/bin/time -p"
+alias R="R --no-save"
+alias Rscript="Rscript --max-ppsize=500000"
+alias ff="firefox"
+alias cr="google-chrome"
+
+alias cdg="source $HOME/Dot/scripts/cdg"
+alias use_polish="source $HOME/Dot/scripts/use_polish"
+alias use_english="source $HOME/Dot/scripts/use_english"
+
+alias open="/usr/bin/xdg-open"
+
+alias grepc="grep --color=always"
+alias zgrepc="zgrep --color=always"
+alias lesr="less -SR"
+alias ls="LC_COLLATE='C.utf8' ls"
+alias jc="jq -C '.'"
+alias hi="cat $HOME/.bash_eternal_history"
+alias hg="cat $HOME/.bash_eternal_history | grep"
+alias wp="which python"
+alias e="emacs"
+
+alias veva="source ${HOME}/Dot/scripts/veva"
+
+function cd
+{
+    if [ $# == 0 ]; then
+        builtin cd
+    else
+        builtin cd "$1" > /dev/null  2>&1
+        if [ $? != 0 ]; then
+            dir=`lo $1`
+
+            if [[ $dir != "" ]]; then
+                echo $dir
+                builtin cd $dir
+            else
+                echo "$1 not found :("
+            fi
+        fi
+    fi
+}
+
+umask 0022
+
+# LOADING MODULES
+
+#module load java emacs lein idea jq bob r rstudio gnuplot unison
+module load code
+use_english
+
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }"'echo \
+               "$(history 1)" | sed -e "s/^[ ]*[0-9]\+[ ]*//" >> ~/.bash_eternal_history'

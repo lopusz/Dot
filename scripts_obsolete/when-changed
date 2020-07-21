@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "Usage: when-changed FILE COMMAND_AND_ITS_ARGUMENTS"
+    exit 1
+fi
+
+function secondsToHHMMSS() {
+	seconds=$1
+	hours=$((seconds / 3600))
+	seconds=$((seconds % 3600))
+	minutes=$((seconds / 60))
+	seconds=$((seconds % 60))
+	printf "%d:%02d:%02d" $hours $minutes $seconds
+}
+
+
+f=$1  
+shift  
+cmd=$*
+tmpf="`mktemp /tmp/onchange.XXXXX`"  
+cp "$f" "$tmpf"  
+trap "rm $tmpf; exit 1" 2  
+
+while : ; do  
+    if [ "$f" -nt "$tmpf" ]; then  
+        touch -r "$f" "$tmpf"
+	tic="$(date +%s)"
+        eval $cmd 
+	toc="$(date +%s)"
+	sec="$(expr $toc - $tic)"
+	printf  "\nWALL TIME %s\n"  `secondsToHHMMSS $sec`
+    fi  
+    sleep 2  
+done  
+

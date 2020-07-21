@@ -1,0 +1,9 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+if [ -f /etc/alias.bashrc ]; then
+    echo "Source"
+    source /etc/alias.bashrc
+fi
+
+scilab -nb -nw -e "exec(\"$1\");exit();"

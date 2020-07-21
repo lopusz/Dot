@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pattern=$1
+
+shift
+
+for f in $*; do
+	pdftotext $f - | grep -e"$pattern"  \
+                   | xargs -L1 echo $f: \
+                   | grep -v -e "^$f:\$" 
+done

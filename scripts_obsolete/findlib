@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $1 == "-1" ]; then
+    find ~/Bookshelf ~/Bookshelf_priv -iname "*$2*" | head -1
+else
+    find ~/Bookshelf ~/Bookshelf_priv -iname "*$1*"
+
+fi

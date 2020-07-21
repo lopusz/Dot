@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+from sys import argv,stdin,exit
+from random import randint
+from os import system
+from select import select
+from time import sleep
+
+for i in range(1,len(argv)):
+   print i,argv[i]
+
+#exit()
+
+while True:
+    songNum=randint(1,(len(argv)-1))
+    system("mplayer " + argv[songNum]) 
+    i, o, e = select( [stdin], [], [], 1 )
+    if (i):
+        x=stdin.readline().strip()
+        if x=="":
+            break

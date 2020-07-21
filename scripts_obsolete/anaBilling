@@ -1,0 +1,142 @@
+#!/usr/bin/python
+from datetime import timedelta
+from sys import argv
+from sys import exit
+
+phoneBook={
+"48609520234":"Marzena",
+"48500124784":"DorotaPiersc",
+"48509928285":"KubaSoltys",
+"48603345829":"MaciejBogdan",
+"48602767203":"Andrzej",
+"48501221854":"PanDarek",
+"48507197926":"Monika",
+"48607777354":"Agnieszka",
+"48603676040":"MagdaGruziel",
+"48226441507":"Dom",
+"48668664698":"Tata",
+"48504331443":"Jasio",
+"48602130223":"Karol",
+"48226415100":"Fryzjer",
+"48501448208":"Ewa",
+"48722895768":"Doerte",
+"48602950000":"PocztaGlosowa",
+"48604294628":"TBalcerzak",
+"48602476448":"TPiatkowski",
+"48792360745":"KaskaGradek",
+"48608288076":"AnnaWojtych",
+"48602641302":"LukaszWroblewski",
+"48505297250":"AnetaGoska",
+"48228991233":"MarcinDrzymalaDom",
+"48501096578":"MarcinDrzymalaKom",
+"48603035543":"PiotrBogdan"
+}
+
+class Bunch:
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
+
+def strToDelta(str):
+    columns=str.split(":")
+    return timedelta(seconds=int(columns[2]),
+                     minutes=int(columns[1]),
+                     hours=int(columns[0]))
+
+def newContact(billingEvent):
+    if billingEvent.type=="SMS":
+        res=Bunch(numSMS=1,
+              totPrice=billingEvent.price,
+              numCalls=0,
+              totCallTime=timedelta(0))
+    elif billingEvent.type=="telefoniczne":
+        res=Bunch(numSMS=0,
+              totPrice=billingEvent.price,
+              numCalls=1,
+              totCallTime=billingEvent.time)
+    return res
+
+def updateContactList(contactList,billingEvent):
+    number=billingEvent.number
+    if number in contactList:
+        if billingEvent.type=="SMS":
+            contactList[number].numSMS+=1
+            contactList[number].totPrice+=billingEvent.price
+        elif billingEvent.type=="telefoniczne":
+            contactList[number].numCalls+=1
+            contactList[number].totCallTime+=billingEvent.time
+            contactList[number].totPrice+=billingEvent.price
+    else:
+        contactList[billingEvent.number]=\
+            newContact(billingEvent)    
+    
+def parseBillingLine(line):
+    columns=line.split("\t")
+    res=Bunch(type=columns[2],
+            price=0.0,
+            time=timedelta(0),
+            number=None)
+    
+    if res.type=="SMS":
+        res.number=columns[4]
+        res.price=float(columns[7])
+    elif res.type=="telefoniczne":
+        res.number=columns[4]
+        res.price=float(columns[7])
+        res.time=strToDelta(columns[5])
+    return res 
+
+def reportContactData(id,totPrice,totCallTime,numCalls,numSMS):
+     info="%20s %6.2f   %s %3d %3d" % \
+         ( id, totPrice, totCallTime.__str__(), numCalls, numSMS)
+     return info
+ 
+if len(argv)!=2:
+    print "Usage:"
+    print "anaBilling BILLING_FILE | sort -r -k2"
+    exit()
+
+skipLines=12
+
+contactList={}
+
+f=open(argv[1],"r")
+
+lineNum=0
+
+while True:
+    line=f.readline()
+    if not line:
+        break
+    lineNum+=1  
+    if lineNum<=skipLines:
+        continue
+    billingEvent=parseBillingLine(line)
+    if billingEvent.type=="SMS" or \
+           billingEvent.type=="telefoniczne":
+        updateContactList(contactList,billingEvent);    
+    
+f.close()
+
+totPrice=0.0
+totCallTime=timedelta(0)
+numCalls=0
+numSMS=0
+
+for number in contactList.keys():
+    if number in phoneBook:
+        id=phoneBook[number]
+    else:
+        id=number
+
+    print reportContactData( id,
+           contactList[number].totPrice, 
+           contactList[number].totCallTime.__str__(),
+           contactList[number].numCalls,
+           contactList[number].numSMS)
+ 
+    totPrice+=contactList[number].totPrice
+    totCallTime+=contactList[number].totCallTime
+    numCalls+=contactList[number].numCalls
+    numSMS+=contactList[number].numSMS
+
+print reportContactData("Totals", totPrice, totCallTime, numCalls, numSMS)

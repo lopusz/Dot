@@ -1,0 +1,30 @@
+" Default tab settings
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set hlsearch
+
+" Tab settings specific to a filetype?
+" autocmd Filetype css setlocal tabstop=4
+
+
+" Highlight cursor column
+set cursorcolumn
+
+" Color column 80
+set colorcolumn=80
+
+" Strip trailing whitespace
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Activate Plug and a few plugins
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-plug'
+Plug 'scrooloose/nerdtree'
+Plug 'SirVer/ultisnips'
+call plug#end()
+
+
+" <F9> Toggle ignorecase for search
+nmap <F9> :set ignorecase! ignorecase?
+

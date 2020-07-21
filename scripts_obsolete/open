@@ -1,0 +1,43 @@
+#!/bin/bash
+
+if [ $TERM == "screen" ]; then
+    export DISPLAY=":0.0"
+fi
+
+echo $DISPLAY
+
+case $1 in
+    *.jpg)
+            display $1 & ;;
+
+    *.ppt)
+            ooimpress $1 & ;;
+
+    *.pdf)
+            xpdf $1 & ;;
+
+    *.ps)
+            gv $1 & ;;
+
+    *.eps)
+            gv $1 &;;
+
+    *.htm)
+            firefox $1 &;;
+
+    *.html)
+            firefox $1 &;;
+
+    *.xhtml)
+            firefox $1 &;;
+
+    *.odt)
+            oowriter $1 &;;
+
+    *.doc)
+            oowriter $1 &;;
+
+    "http://"*)
+            firefox $1 &;;
+esac
+

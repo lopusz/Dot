@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Add remote Ceon
+if [ $# -eq 1 ]; then
+    cd $1
+    git remote add ceon ssh://git.ceon.pl/~lopusz/git/$1
+else
+    echo "Usage: gitac REPO_DIR"
+    echo "REPO_DIR must be accessible from the current directory."
+fi

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+LO_PATH=$HOME/Dot/scripts
+LO_DBNAME=_lodb
+
+echo "Updating lo database, it may take several minutes..."
+cd $HOME
+find . -type d -print   \
+    | sed "s@^./@@"     \
+    | grep -v "/\..*$"  \
+    | grep -v "^\."     \
+    > $LO_PATH/$LO_DBNAME.new
+    
+mv -f $LO_PATH/$LO_DBNAME.new $LO_PATH/$LO_DBNAME
+

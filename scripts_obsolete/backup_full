@@ -1,0 +1,26 @@
+#!/bin/bash
+
+INVDIR=`dirname $0`
+HOST=`hostname | sed -e"s/\.local//g"`
+
+source $INVDIR/backup_env
+
+BAKDIR=`date "+/storage/lopusz/Backup/$HOST/full_%y%m%d"`
+
+ulimit -n 1024
+
+cd $HOME
+cd ..
+
+echo "Perform FULL backup to $BAKDIR [y/n]?"
+read ans
+
+if [ $ans == "y" ]; then
+	mkdir $BAKDIR
+	duplicity full \
+		--no-encryption \
+                --exclude-filelist $EXCLUD \
+  		$SRCDIR file://$BAKDIR 
+	echo $BAKDIR > $BAKDIR_LOG 
+fi
+

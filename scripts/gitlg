@@ -1,0 +1,9 @@
+#!/bin/bash
+
+shopt -s expand_aliases
+
+if [ $# == 1 ]; then
+	git lg | cut -c42- | tac | nl | tac | head -n$1
+else
+	git lg | cut -c42- | tac | nl | tac
+fi

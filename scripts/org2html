@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# != 1 ]]; then
+    echo "Usage: org2html ORG_FILE"
+    exit 1
+fi
+
+if [[ "$EMACS_HOME" == "" ]]; then
+    echo "No EMACS_HOME variable, exiting ..."
+    exit 1
+fi
+
+EMACS=$EMACS_HOME/bin/emacs
+
+${EMACS} ${1} --batch -f org-export-as-html --kill

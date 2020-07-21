@@ -1,0 +1,12 @@
+#!/bin/bash
+
+make -n $* | cut -c1-80
+
+echo Do you want to execute the above? [y/N]
+
+read YN
+
+if [[ ((${YN} == "Y") || ( ${YN} == "y" )) ]]; then
+    /usr/bin/time -p make $* 2> make.err | tee make.log 
+    cat make.err
+fi

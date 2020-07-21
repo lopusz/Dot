@@ -1,0 +1,6 @@
+while [ ! -d .git ]; do
+    cd ..
+done
+
+CURRENT_DIR=`pwd`
+echo "Changed to dir $CURRENT_DIR..."

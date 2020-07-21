@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -f /storage/lopusz/.mounted ]; then
+	unison -ui text $HOME/Bookshelf \
+      		/storage/lopusz/Bookshelf
+    if [ -f $HOME/Bookshelf_priv/.mounted ]; then
+	    unison -ui text $HOME/Bookshelf_priv \
+      		/storage/lopusz/Bookshelf_priv
+    else
+        echo "Bookshelf_priv empty, skipping."
+    fi
+else
+	echo "Storage not mounted!"
+fi

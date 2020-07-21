@@ -1,0 +1,5 @@
+Host ciemniak2
+ProxyCommand ssh -W %h:%p ganek.vls.icm.edu.pl
+HostName ciemniak2
+
+

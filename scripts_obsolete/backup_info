@@ -1,0 +1,19 @@
+#!/bin/bash
+
+INVDIR=`dirname $0`
+source $INVDIR/backup_env
+
+ulimit -n 1024
+
+BAKDIR=`head $BAKDIR_LOG`
+
+if [ ! -d $BAKDIR ]; then
+    echo "FATAL! No $BAKDIR. Storage not mounted?"
+    exit
+fi
+
+echo "Displaying info about last backup..."
+
+duplicity collection-status \
+    --no-encryption \
+    file://$BAKDIR

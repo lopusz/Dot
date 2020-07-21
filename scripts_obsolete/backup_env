@@ -1,0 +1,3 @@
+SRCDIR=`basename $HOME`
+EXCLUD=$HOME/.scripts_common/backup_exclude.$HOST
+BAKDIR_LOG=$HOME/.scripts_common/backup_lastfull

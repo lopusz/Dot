@@ -1,0 +1,42 @@
+snippet aama
+
+def main():
+	pass
+
+
+if __name__ == "__main__":
+	main()
+endsnippet
+
+snippet aapy
+#!/usr/bin/env python3
+endsnippet
+
+snippet aalg
+import logging
+
+logging.basicConfig(level=logging.ERROR,
+					format='%(asctime)s %(levelname)s %(message)s',
+					datefmt='%Y/%m/%d %H:%M:%S')
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
+endsnippet
+
+snippet aabp
+import ipdb; DEBUG and ipdb.set_trace()$0
+endsnippet
+
+snippet aapl
+	fig = plt.figure(figsize=(8, 4))
+	fig.suptitle('My title')
+	ax = fig.add_subplot(1, 1, 1)
+
+	$0
+
+	plt.grid()
+	fig.savefig("plot.png", dpi=240, bbox_inches="tight")
+	plt.close(fig)
+endsnippet
+
+
+

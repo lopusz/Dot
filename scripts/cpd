@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    CMD=`basename $0`
+    echo "Usage:  ${CMD} FILE_NAME"
+    exit 1
+fi
+
+FILE_NAME=`echo ${1} | sed -e "s/\/$//"`
+
+SUFFIX=`date +"-%Y%m%d-%H%M" -r ${FILE_NAME}`
+NEW_FILE_NAME=${FILE_NAME}${SUFFIX}
+cp -a ${FILE_NAME} ${NEW_FILE_NAME}
+
+echo "${FILE_NAME} copied to ${NEW_FILE_NAME}"

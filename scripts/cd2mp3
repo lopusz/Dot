@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+import os,sys
+from string import *
+
+if len(sys.argv) >=2:
+    in_file_name=sys.argv[1]
+else:
+    in_file_name="default.cd"
+
+in_file=open(in_file_name,"r")
+
+print "Reading file ",in_file_name,"..."
+
+while True:
+    line=in_file.readline()
+    list=line.split()
+    if len(list)<2: break
+    os.system("cdparanoia \""+ list[0]+"\"")
+    os.system("lame -h cdda.wav " + list[1])
+    os.system("rm -f cdda.wav")
+
+in_file.close()
+

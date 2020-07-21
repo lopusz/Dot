@@ -1,0 +1,13 @@
+
+ENV_DIR=/home/lopusz/PyEnvs/venvs
+ENV_NAME=${1}
+
+ENV_FULL=${ENV_DIR}/${ENV_NAME}
+
+if [ -d ${ENV_NAME} ]; then
+    source ${ENV_NAME}/bin/activate
+elif [ -d ${ENV_FULL} ]; then
+    source ${ENV_FULL}/bin/activate
+else
+    echo "There is no dir ${ENV_NAME} nor ${ENV_FULL}"
+fi

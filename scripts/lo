@@ -1,0 +1,22 @@
+#!/bin/bash
+
+LO_PATH=$HOME/Dot/scripts
+LO_DBNAME=_lodb
+
+CUR_DIR=`pwd | sed "s@$HOME/@@"` 
+
+res=`egrep "^$CUR_DIR/.*$1" $LO_PATH/$LO_DBNAME | sed "s@^@$HOME/@" | head -n1`
+
+if [[ $res != "" ]]; then
+    echo $res 
+    exit 0
+fi
+
+res=`egrep "/$1$|^$1$" $LO_PATH/$LO_DBNAME | sed "s@^@$HOME/@" | head -n1`
+
+if [[ $res != "" ]]; then
+    echo $res 
+    exit 0
+fi
+
+exit 1

@@ -1,0 +1,28 @@
+[user]
+    email = lopusz@users.noreply.github.com
+    name = Michal Lopuszynski
+
+[core]
+    editor = nano
+
+[alias]
+    st    = status
+    stu   = status -uno
+    co    = checkout
+    ci    = commit
+    br    = branch
+    bra   = branch -a
+    df    = diff --ignore-space-change --color
+    dfc   = diff --cached --ignore-space-change --color
+    dfn   = diff --name-status
+    lg    = log --pretty=oneline
+    pss   = push --tags storage master
+    pls   = pull --tags storage master
+    mff   = merge --ff-only
+
+[gui]
+    fontui = -family helvetica -size 12 -weight bold -slant roman -underline 0 -overstrike 0
+    fontdiff = -family Courier -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+    commitmsgwidth = 40
+[credential]
+    helper = cache --timeout=32400

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+    echo "Please provide SD CARD mounting point as single parameter."
+    exit 1
+fi
+
+if [ ! -f $HOME/Bookshelf_priv/.mounted ]; then
+    echo "Bookshelf not mounted, mounting it..."
+    mntb
+fi
+
+if [ ! -f $HOME/Bookshelf_priv/.mounted ]; then
+    echo "Mounting Bookshelf seems to be unsuccessful, exiting..."
+    exit 1
+fi
+
+
+/usr/bin/time -p \
+    rsync -av --delete --inplace --size-only --exclude=".onyx" $HOME/Bookshelf_priv $1
+
+/usr/bin/time -p \
+    rsync -av --delete --inplace --size-only --exclude=".onyx" --exclude examples/ $HOME/Bookshelf $1

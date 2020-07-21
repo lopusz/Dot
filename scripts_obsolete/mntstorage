@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ping -c1 -t1 storage > /dev/null
+
+if [ $? == 0 ]; then
+	echo "Storage Ok, mounting filesystem..."
+	mount /storage/lopusz
+else
+	echo "Storage not found. Power it on!" 
+fi

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+TMPDIR="${HOME}/Tmp/"
+BAKPATH="/storage/lopusz/Backup/gitceon/"
+BAKFILE=`date "+gitceon_%y%m%d.tgz"`
+
+echo "Perform  FULL backup of CEON-GIT@GANEK to ${BAKPATH} [y/n]?"
+read ans
+
+if [ $ans == "y" ]; then
+   scp -rp lopusz@ganek.vls.icm.edu.pl:/git-user/lopusz ${TMPDIR}
+   cd ${TMPDIR}
+   tar cvfz ${BAKFILE} lopusz 
+   md5sum ${BAKFILE} > ${BAKFILE}.md5
+   mv ${BAKFILE}* ${BAKPATH}
+   rm -rf ${TMPDIR}/lopusz
+fi
+

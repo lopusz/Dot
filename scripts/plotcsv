@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cmd="plot "
+
+for arg in $*; do
+ if [ -f $arg ]; then
+    cmd=$cmd" '$arg'"
+ else
+    cmd="$cmd $arg"
+ fi
+done
+
+echo "set datafile separator \",\"; set nokey; $cmd" | gnuplot -persist

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# On Ubuntu 18.04 prerequisite is here: sudo apt-get install python3-venv
+
+ENV_DIR=/home/lopusz/PyEnvs/venvs
+ENV_NAME=${1}
+
+ENV_FULL=${ENV_DIR}/${ENV_NAME}
+
+if [ "$#" -ne "1" ]; then
+    CMD=$(basename $0)
+    echo "Usage ${CMD} ENV_NAME"
+    exit 1
+fi
+
+if [ -a ${ENV_FULL} ]; then
+    echo "Env ${ENV_NAME} at ${ENV_FULL} already exists"
+    exit 1
+else
+	python3 -m venv ${ENV_FULL}
+fi

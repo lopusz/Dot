@@ -1,0 +1,29 @@
+#!/bin/bash
+
+INVDIR=`dirname $0`
+HOST=`hostname | sed -e"s/\.local//g"`
+
+source $INVDIR/backup_env
+
+ulimit -n 1024
+
+BAKDIR=`head $BAKDIR_LOG`
+
+cd $HOME
+cd ..
+
+echo "Perform INCREMENTAL backup to $BAKDIR [y/n]?"
+read ans
+
+if [ $ans == "y" ]; then
+
+	if [ ! -d $BAKDIR ]; then
+		echo "FATAL! No $BAKDIR. Storage not mounted?"
+		exit
+	fi
+
+	duplicity incremental \
+   		--no-encryption \
+   		--exclude-filelist $EXCLUD \
+   		 $SRCDIR file://$BAKDIR
+fi
